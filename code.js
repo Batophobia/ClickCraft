@@ -2622,6 +2622,7 @@ function hitPlyr(){
 		
 		plyr.x=21;
 		plyr.y=8;
+		prevSqr="H";
 		
 		retHom();
 		return 0;
