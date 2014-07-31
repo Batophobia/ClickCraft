@@ -2872,7 +2872,7 @@ function adventure(input){
 		$("#plcNam").text("???");
 		$("#plcPic").html(tmpPic);
 		$("#plcBtn").html("You come across a ghost of your former self.");
-		prevSqr==getSqr();
+		prevSqr=getSqr();
 		return 0;
 	}else{
 		$(".interest").hide();
