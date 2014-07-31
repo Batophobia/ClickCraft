@@ -2570,6 +2570,10 @@ function hitPlyr(){
 		}
 		$("#alertBox").append("<div id='plyrDie'>"+msg+"</div>");
 		setTimeout(function() { $("#plyrDie").fadeOut(2000, function(){ $(this).remove();}); },2000);
+		
+		plyr.x=21;
+		plyr.y=8;
+		
 		retHom();
 		return 0;
 	}
