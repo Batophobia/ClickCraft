@@ -2862,9 +2862,17 @@ function adventure(input){
 	}else if(prevSqr=="?"){
 		var tmpPic=$("#p7").html();
 		$(".interest").show();
-		$("#plcNam").text("???");
+		$("#plcNam").text("The End");
 		$("#plcPic").html(tmpPic);
 		$("#plcBtn").html("<div class='button' id='explore' onclick='explr(7);'>Explore</div>");
+		return 0;
+	}else if(prevSqr=="I"){
+		var tmpPic=$("#p8").html();
+		$(".interest").show();
+		$("#plcNam").text("???");
+		$("#plcPic").html(tmpPic);
+		$("#plcBtn").html("You come across a ghost of your former self.");
+		prevSqr==getSqr();
 		return 0;
 	}else{
 		$(".interest").hide();
