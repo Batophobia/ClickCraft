@@ -1,8 +1,6 @@
 /*
 	Look into 1366x768 Adventure mode
 	
-	Dropdown for easy crafting of items you've made already?
-	
 	Hotkeys?
 		I for Iron Ignot
 		C for Coal
@@ -11,6 +9,7 @@
 var cnm="clkcrtsvfl";
 var timer=0, sec=0, hr=0;
 var blnAdv;
+var intAlrtCntr=0;
 
 var blocks, items, villagers, unlk, advMap, plyr, mpseed, mapCmplt;
 
@@ -386,9 +385,10 @@ var tabl=[
 var frn=[0,0,0,0,0,0,0];
 
 function alert(input){
-	$("#alert").fadeOut(1000, function(){ $(this).remove();});
-	$("#alertBox").append("<div id='alert'>"+input+"</div>");
-	setTimeout(function() { $("#alert").fadeOut(1000, function(){ $(this).remove();}); },2000);
+	var strId="alert"+intAlrtCntr;
+	$("#alertBox").append("<div id='"+strId+"'>"+input+"</div>");
+	setTimeout(function() { $("#"+strId).fadeOut(1000, function(){ $(this).remove();}); },2000);
+	intAlrtCntr++;
 }
 
 function ticker(){
@@ -1771,7 +1771,8 @@ function craft(){
 		resetCraft();
 	}
 	
-	if(itm!=0){
+	if(itm!=0 && crftAgn){
+		crftAgn=false;
 		make(itm);
 		resetCraft();
 		
@@ -1808,13 +1809,61 @@ function check(input){
 	return retVal;
 }
 
+var crftAgn=true;
 function resetCraft(){
-	tabl=[[0,0,0],[0,0,0],[0,0,0]];
-	for(i=1;i<4;i++){
-		for(j=1;j<4;j++){
-			$("#"+i+"_"+j).html("");
+	setTimeout("crftAgn=true;",500);
+	
+	var blnAgn=true, endX, endY;
+	
+	for(var i=1;i<4;i++){
+	  if(blnAgn){
+		for(var j=1;j<4;j++){
+			var curItm=tabl[i-1][j-1];
+			if(curItm!=0){
+			 if(curItm<256){
+			 	if(blocks[curItm][1]>10)
+			 		blocks[curItm][1]-=10;
+			 	else{
+			 		blnAgn=false;
+			 		endX=i;
+			 		endY=j;
+			 		break;
+			 	}
+			 }else{
+			 	if(items[curItm-256][1]>10)
+			 		items[curItm-256][1]-=10;
+			 	else{
+			 		blnAgn=false;
+			 		endX=i;
+			 		endY=j;
+			 		break;
+			 	}
+			 }
+			}
 		}
+	  }
 	}
+	
+	if(!blnAgn){
+		for(var i=1;i<4;i++){
+			for(var j=1;j<4;j++){
+				$("#"+i+"_"+j).html("");
+				
+				if(i<endX && j<endY){
+					var curItm=tabl[i-1][j-1];
+					if(curItm!=0){
+					 if(curItm<256)
+					 	blocks[curItm][1]+=10;
+					 else
+					 	items[curItm-256][1]+=10;
+					}
+				}
+			}
+		}
+		tabl=[[0,0,0],[0,0,0],[0,0,0]];
+	}
+	
+	invRefresh();
 }
 
 function retHom(){
